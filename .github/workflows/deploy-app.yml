@@ -1,0 +1,17 @@
+name: Deploy App
+run-name: ${{ github.actor }} is deploying the app
+on: [push]
+jobs: 
+  Deploy-App:
+    runs-on: ubuntu-latest
+    steps: 
+      - run: echo "Starting..."
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: 
+          node-version: '18'
+      - run: echo "Installing dependencies..."
+      - run: npm install
+      - run: echo "Building the app..."
+      - run: npm run build
+
