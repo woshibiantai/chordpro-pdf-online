@@ -2,16 +2,31 @@ name: Deploy App
 run-name: ${{ github.actor }} is deploying the app
 on: [push]
 jobs: 
-  Deploy-App:
+  build:
     runs-on: ubuntu-latest
     steps: 
-      - run: echo "Starting..."
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: 
           node-version: '18'
-      - run: echo "Installing dependencies..."
       - run: npm install
-      - run: echo "Building the app..."
       - run: npm run build
-
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3.0.1
+        with: 
+          name: 'github-pages'
+          path: 'dist'
+  deploy: 
+    needs: build
+    permissions: 
+      pages: write
+      id-token: write
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.url }}
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4.0.5
+                                                        
