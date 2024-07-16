@@ -24,8 +24,8 @@
       :key="index"
       class="chordchart-pair"
     >
-      <div class="chordchart-pair-chord">{{ pair.chord }}</div>
-      <div class="chordchart-pair-lyric">{{ pair.lyric }}</div>
+      <code class="chordchart-pair-chord">{{ pair.chord }}</code>
+      <span class="chordchart-pair-lyric">{{ pair.lyric }}</span>
     </span>
   </p>
 </template>
@@ -76,21 +76,23 @@ const chordLyricPairs = computed(() => {
 }
 
 .chordchart-comment {
+  font-size: 1em;
   font-weight: bold;
-  line-height: 1.3em;
-  margin-bottom: .8em;
+  line-height: 2;
 }
 
 .chordchart-lyrics {
   line-height: 1.3em;
   margin-bottom: 0;
+  margin-left: 2em;
 }
 
 .chordchart-line {
   display: flex;
   gap: .4em;
-  margin-bottom: .8em;
-  margin-top: 0;
+  line-height: 1.1em;
+  margin-left: 2em;
+  margin-top: .2em;
 }
 
 .chordchart-pair {
@@ -101,12 +103,13 @@ const chordLyricPairs = computed(() => {
 
 .chordchart-pair-chord {
   font-weight: bold;
+  font-family: inherit;
   height: 1.1em;
-  line-height: 1.1em;
+  padding-right: .4em;
+  white-space: nowrap;
 }
 
 .chordchart-pair-lyric {
   height: 1.1em;
-  line-height: 1.1em;
 }
 </style>

@@ -1,11 +1,26 @@
 <template>
   <section>
     <h1>{{ title }}</h1>
-    <p>{{ artist }}</p>
-    <p>
-      <span>{{ key }}</span>
-      <span>{{ time }}</span>
-      <span>{{ tempo }}</span>
+    <p class="chordchart-artist">{{ artist }}</p>
+    <p class="chordchart-metadata-line">
+      <span
+        v-if="key"
+        class="chordchart-metadata"
+      >
+        Key - {{ key }}
+      </span>
+      <span
+        v-if="tempo"
+        class="chordchart-metadata"
+      >
+        Tempo - {{ tempo }}
+      </span>
+      <span
+        v-if="time"
+        class="chordchart-metadata"
+      >
+        Time - {{ time }}
+      </span>
     </p>
     <ChordChartBodyLine
       v-for="(line, index) in bodyLines"
@@ -50,3 +65,34 @@ const title = computed(() => {
   return titleLine.replace('{title:', '').replace('}', '');
 });
 </script>
+
+<style scoped>
+h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.chordchart-artist {
+  font-size: .7em;
+}
+
+.chordchart-metadata-line {
+  display: flex;
+  gap: .4em;
+
+}
+
+.chordchart-metadata {
+  font-size: 0.8em;
+  font-weight: bold;
+  
+  &:not(:last-child) {
+    &::after {
+      content: '|';
+      font-weight: bold;
+      margin-left: .4em;
+    }
+  }
+}
+</style>
