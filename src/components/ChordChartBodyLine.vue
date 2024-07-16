@@ -25,7 +25,12 @@
       class="chordchart-pair"
     >
       <code class="chordchart-pair-chord">{{ pair.chord }}</code>
-      <span class="chordchart-pair-lyric">{{ pair.lyric }}</span>
+      <span
+        v-if="!isChordsOnly"
+        class="chordchart-pair-lyric"
+      >
+        {{ pair.lyric }}
+      </span>
     </span>
   </p>
 </template>
@@ -40,6 +45,10 @@ const props = defineProps({
   },
 });
 
+const isChordsOnly = computed(() => {
+  const withoutChords = props.line.replace(/\[([^[\]]*)\]/g, '');
+  return withoutChords.trim().length === 0;
+});
 const isComment = computed(() => props.line.startsWith('{comment:'));
 const isLineBreak = computed(() => props.line.trim() === ''); 
 const isLyricsOnly = computed(() => !isComment.value && !props.line.includes('['));
