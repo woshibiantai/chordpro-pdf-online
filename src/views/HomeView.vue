@@ -1,24 +1,3 @@
-<script setup>
-import { defineAsyncComponent, ref, watch } from 'vue';
-const input = ref(localStorage.getItem('chordproInput') || '');
-const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
-
-import('@/assets/sample-chart.js')
-  .then(({ sampleChordProChart }) => {
-    if (!input.value) {
-      input.value = sampleChordProChart;
-    }
-  });
-
-watch(input, (value) => {
-  localStorage.setItem('chordproInput', value);
-});
-
-function onPrint() {
-  window.print();
-}
-</script>
-
 <template>
   <main>
     <section class="no-print">
@@ -30,19 +9,37 @@ function onPrint() {
           rows="10"
         />
       </div>
-      <button
-        class="chordpro-print-button"
-        @click="onPrint()"
-        type="button"
-      >
-        Print
-      </button>
+      <Toolbar
+        v-model:columns="columns"
+      />
     </section>
     <ChordChart
+      :columns="columns"
       :chord-pro="input"
     />
   </main>
 </template>
+
+<script setup>
+import { defineAsyncComponent, ref, watch } from 'vue';
+const input = ref(localStorage.getItem('chordproInput') || '');
+const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
+const Toolbar = defineAsyncComponent(() => import('../components/Toolbar.vue'));
+
+const columns = ref(1);
+
+import('@/assets/sample-chart.js')
+  .then(({ sampleChordProChart }) => {
+    if (!input.value) {
+      input.value = sampleChordProChart;
+    }
+  });
+
+watch(input, (value) => {
+  localStorage.setItem('chordproInput', value);
+});
+</script>
+
 
 <style scoped>
 .chordpro-textfield {

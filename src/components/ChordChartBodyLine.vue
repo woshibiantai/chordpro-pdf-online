@@ -1,10 +1,6 @@
 <template>
-  <div
-    v-if="isLineBreak"
-    class="chordchart-linebreak"
-  />
   <p
-    v-else-if="isLyricsOnly"
+    v-if="isLyricsOnly"
     class="chordchart-lyrics"
   >
     {{ props.line }}
@@ -50,7 +46,6 @@ const isChordsOnly = computed(() => {
   return withoutChords.trim().length === 0;
 });
 const isComment = computed(() => props.line.startsWith('{comment:'));
-const isLineBreak = computed(() => props.line.trim() === ''); 
 const isLyricsOnly = computed(() => !isComment.value && !props.line.includes('['));
 
 const comment = computed(() => {
@@ -98,6 +93,7 @@ const chordLyricPairs = computed(() => {
 
 .chordchart-line {
   display: flex;
+  flex-wrap: wrap;
   gap: .4em;
   line-height: 1.1em;
   margin-left: 2em;

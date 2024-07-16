@@ -22,11 +22,22 @@
         Time - {{ time }}
       </span>
     </p>
-    <ChordChartBodyLine
-      v-for="(line, index) in bodyLines"
-      :key="index"
-      :line="line"
-    />
+    <div
+      class="chordchart-body"
+      :style="{ '--chordchart-columns': columns }"
+    >
+      <div
+        class="chordchart-body-stanza"
+        v-for="(stanza, index) in stanzas"
+        :key="index"
+      >
+        <ChordChartBodyLine
+          v-for="(line, index) in stanza"
+          :key="index"
+          :line="line"
+        />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -39,6 +50,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  columns: {
+    type: Number,
+    default: 1,
+  },
 });
 
 const lines = computed(() => props.chordPro.split('\n'));
@@ -47,10 +62,20 @@ const artist = computed(() => {
   const artistLine = lines.value.find(line => line.startsWith('{artist:')) || '';
   return artistLine.replace('{artist:', '').replace('}', '');
 });
-const bodyLines = computed(() => lines.value.filter(line => !line.startsWith('{') || line.startsWith('{comment:')));
+const bodyLines = computed(() => lines.value.filter(line => line.trim() !== '' && (!line.startsWith('{') || line.startsWith('{comment:'))));
 const key = computed(() => {
   const keyLine = lines.value.find(line => line.startsWith('{key:')) || '';
   return keyLine.replace('{key:', '').replace('}', '');
+});
+const stanzas = computed(() => {
+  return bodyLines.value.reduce((acc, line) => {
+    if (line.startsWith('{comment:')) {
+      acc.push([line]); // Start new stanza
+    } else {
+      acc[acc.length - 1].push(line); // Add line to current stanza
+    }
+    return acc;
+  }, []);
 });
 const tempo = computed(() => {
   const tempoLine = lines.value.find(line => line.startsWith('{tempo:')) || '';
@@ -104,5 +129,14 @@ h1 {
       margin-left: .4em;
     }
   }
+}
+
+.chordchart-body {
+  column-count: var(--chordchart-columns);
+}
+
+.chordchart-body-stanza {
+  break-inside: avoid;
+  margin-top: 1em;
 }
 </style>
