@@ -17,19 +17,19 @@ watch(input, (value) => {
 
 <template>
   <main>
-    <div class="chordpro-textfield">
-      <label for="chordproInput">Input the ChordPro chart here:</label>
-      <textarea
-        v-model="input"
-        id="chordproInput"
-        rows="10"
-      />
-    </div>
-    <section>
-      <ChordChart
-        :chord-pro="input"
-      />
+    <section class="no-print">
+      <div class="chordpro-textfield">
+        <label for="chordproInput">Input the ChordPro chart here:</label>
+        <textarea
+          v-model="input"
+          id="chordproInput"
+          rows="10"
+        />
+      </div>
     </section>
+    <ChordChart
+      :chord-pro="input"
+    />
   </main>
 </template>
 

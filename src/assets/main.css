@@ -6,3 +6,9 @@
   padding: 2rem;
   font-weight: normal;
 }
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
