@@ -13,6 +13,10 @@ import('@/assets/sample-chart.js')
 watch(input, (value) => {
   localStorage.setItem('chordproInput', value);
 });
+
+function onPrint() {
+  window.print();
+}
 </script>
 
 <template>
@@ -26,6 +30,13 @@ watch(input, (value) => {
           rows="10"
         />
       </div>
+      <button
+        class="chordpro-print-button"
+        @click="onPrint()"
+        type="button"
+      >
+        Print
+      </button>
     </section>
     <ChordChart
       :chord-pro="input"
@@ -38,5 +49,10 @@ watch(input, (value) => {
   flex-direction: column;
   gap: 8px;
   display: flex;
+}
+
+.chordpro-print-button {
+  margin-bottom: 8px;
+  margin-top: 8px;
 }
 </style>

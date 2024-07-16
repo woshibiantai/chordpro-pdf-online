@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="chordchart">
     <h1>{{ title }}</h1>
     <p class="chordchart-artist">{{ artist }}</p>
     <p class="chordchart-metadata-line">
@@ -67,6 +67,16 @@ const title = computed(() => {
 </script>
 
 <style scoped>
+.chordchart {
+  aspect-ratio: 1 / 1.414;
+  outline: 1px solid #ccc;
+  padding: 2em;
+
+  @media print {
+    outline: none;
+  }
+}
+
 h1 {
   font-size: 1.5em;
   font-weight: bold;

@@ -2,13 +2,18 @@
 
 #app {
   max-width: 1280px;
+  min-width: 320px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+
+  @media print {
+    padding: 0;
+  }
 }
 
-@media print {
-  .no-print {
+.no-print {
+  @media print {
     display: none;
   }
 }
