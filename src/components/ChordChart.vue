@@ -57,17 +57,29 @@ const props = defineProps({
 });
 
 const lines = computed(() => props.chordPro.split('\n'));
+const artist = computed(computeArtist);
+const bodyLines = computed(computeBodyLines);
+const key = computed(computeKey);
+const stanzas = computed(computeStanzas);
+const tempo = computed(computeTempo);
+const time = computed(computeTime);
+const title = computed(computeTitle);
 
-const artist = computed(() => {
+function computeArtist() {
   const artistLine = lines.value.find(line => line.startsWith('{artist:')) || '';
   return artistLine.replace('{artist:', '').replace('}', '');
-});
-const bodyLines = computed(() => lines.value.filter(line => line.trim() !== '' && (!line.startsWith('{') || line.startsWith('{comment:'))));
-const key = computed(() => {
+}
+
+function computeBodyLines() {
+  return lines.value.filter(line => line.trim() !== '' && (!line.startsWith('{') || line.startsWith('{comment:')));
+}
+
+function computeKey() {
   const keyLine = lines.value.find(line => line.startsWith('{key:')) || '';
   return keyLine.replace('{key:', '').replace('}', '');
-});
-const stanzas = computed(() => {
+}
+
+function computeStanzas() {
   return bodyLines.value.reduce((acc, line) => {
     if (line.startsWith('{comment:')) {
       acc.push([line]); // Start new stanza
@@ -76,19 +88,22 @@ const stanzas = computed(() => {
     }
     return acc;
   }, []);
-});
-const tempo = computed(() => {
+}
+
+function computeTempo() {
   const tempoLine = lines.value.find(line => line.startsWith('{tempo:')) || '';
   return tempoLine.replace('{tempo:', '').replace('}', '');
-});
-const time = computed(() => {
+}
+
+function computeTime() {
   const timeLine = lines.value.find(line => line.startsWith('{time:')) || '';
   return timeLine.replace('{time:', '').replace('}', '');
-});
-const title = computed(() => {
+}
+
+function computeTitle() {
   const titleLine = lines.value.find(line => line.startsWith('{title:')) || '';
   return titleLine.replace('{title:', '').replace('}', '');
-});
+}
 </script>
 
 <style scoped>
