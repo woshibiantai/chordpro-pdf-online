@@ -5,11 +5,20 @@
   >
     {{ props.line }}
   </p>
-  <p
-    v-else-if="isComment"
-    class="chordchart-comment"
-  >
-    {{ comment }}
+  <p v-else-if="isComment">
+    <span
+      v-for="(comment, index) in comments"
+      :key="index"
+      :class="{
+        'chordchart-comment': comment.type === 'comment',
+        'chordchart-keychange': comment.type === 'keychange',
+      }"
+    >
+      <template v-if="comment.type === 'keychange'">
+        Key - 
+      </template>
+      {{ comment.value }}
+    </span>
   </p>
   <p
     v-else
@@ -45,14 +54,22 @@ const isChordsOnly = computed(() => {
   const withoutChords = props.line.replace(/\[([^[\]]*)\]/g, '');
   return withoutChords.trim().length === 0;
 });
-const isComment = computed(() => props.line.startsWith('{comment:'));
+const isComment = computed(() => props.line.includes('{'));
 const isLyricsOnly = computed(() => !isComment.value && !props.line.includes('['));
 
-const comment = computed(() => {
+const comments = computed(() => {
   if (!isComment.value) {
-    return '';
+    return [];
   }
-  return props.line.replace('{comment:', '').replace('}', '');
+  return props.line.split('}')
+    .filter((segment) => segment.trim().length > 0)
+    .map((segment) => {
+      const type = segment.replace(/{|(:.*)/g, '');
+      return {
+        type,
+        value: segment.replace(`{${type}:`, ''),
+      };
+    });
 });
 
 const chordLyricPairs = computed(() => {
@@ -98,11 +115,14 @@ const chordLyricPairs = computed(() => {
 </script>
 
 <style scoped>
-.chordchart-linebreak {
-  margin-bottom: 2em;
+.chordchart-comment {
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 2;
 }
 
-.chordchart-comment {
+.chordchart-keychange {
+  float: right;
   font-size: 1em;
   font-weight: bold;
   line-height: 2;
