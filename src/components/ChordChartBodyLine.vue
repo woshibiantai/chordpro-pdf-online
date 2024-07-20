@@ -57,7 +57,7 @@ const comment = computed(() => {
 
 const chordLyricPairs = computed(() => {
   const segments = props.line
-    .split(/(\[[\w\/\(\\#\)]*\])/); // Split by chords
+    .split(/(\[[\w/#()]*\])/); // Split by chords
   return segments.reduce((chordLine, segment, index) => {
     if (!segment.includes('[')) {
       if (index === 0) {
