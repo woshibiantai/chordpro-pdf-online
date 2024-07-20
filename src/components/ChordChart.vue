@@ -86,7 +86,7 @@ function computeArtist() {
 }
 
 function computeBodyLines() {
-  return lines.value.filter(line => line.trim() !== '' && (!line.startsWith('{') || line.startsWith('{comment:')));
+  return lines.value.filter(line => (!line.startsWith('{') || line.startsWith('{comment:')));
 }
 
 function computeKey() {
@@ -95,9 +95,14 @@ function computeKey() {
 }
 
 function computeStanzas() {
-  return bodyLines.value.reduce((acc, line) => {
-    if (line.startsWith('{comment:')) {
-      acc.push([line]); // Start new stanza
+  return bodyLines.value.reduce((acc, line, index) => {
+    if (index === 0) {
+      acc.push(line.trim() === '' ? [] : [line]); // Start first stanza
+    } else if (line.trim() === '') {
+      if (acc[acc.length - 1].length === 0) {
+        return acc; // Skip if previous stanza was empty
+      }
+      acc.push([]); // Start new stanza
     } else {
       acc[acc.length - 1].push(line); // Add line to current stanza
     }
