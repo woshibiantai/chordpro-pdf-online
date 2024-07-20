@@ -48,14 +48,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import ChordChartBodyLine from './ChordChartBodyLine.vue';
 
-const props = defineProps({
-  chordPro: {
-    type: String,
-    default: '',
-  },
+defineProps({
   columns: {
     type: Number,
     default: 1,
@@ -63,9 +59,10 @@ const props = defineProps({
 });
 
 const MAIN_MAX_WIDTH = 1216;
+const chordProInput = inject('chordProInput');
 const chordchartRef = ref(null);
 const chordchartTransformScale = computed(computeTransformScale);
-const lines = computed(() => props.chordPro.split('\n'));
+const lines = computed(() => chordProInput.value.split('\n'));
 const artist = computed(computeArtist);
 const bodyLines = computed(computeBodyLines);
 const key = computed(computeKey);

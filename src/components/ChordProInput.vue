@@ -1,10 +1,12 @@
 <template>
-  <label for="chordpro-input">Input chord chords in ChordPro format:</label>
-  <textarea
-    v-model="input"
-    id="chordpro-input"
-    rows="10"
-  />
+  <form>
+    <label for="chordpro-input">Chord chart in ChordPro format:</label>
+    <textarea
+      v-model="input"
+      id="chordpro-input"
+      rows="10"
+    />
+  </form>
 </template>
 
 <script setup>
