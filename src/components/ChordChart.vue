@@ -1,11 +1,5 @@
 <template>
-  <section
-    class="chordchart"
-    ref="chordchartRef"
-    :style="{
-      '--chordchart-transform-scale': chordchartTransformScale,
-    }"
-  >
+  <section class="chordchart">
     <h1>{{ title }}</h1>
     <p class="chordchart-artist">{{ artist }}</p>
     <p class="chordchart-metadata-line">
@@ -48,7 +42,7 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject } from 'vue';
 import ChordChartBodyLine from './ChordChartBodyLine.vue';
 
 defineProps({
@@ -58,27 +52,15 @@ defineProps({
   },
 });
 
-const MAIN_MAX_WIDTH = 1216;
 const chordProInput = inject('chordProInput');
-const chordchartRef = ref(null);
-const chordchartTransformScale = computed(computeTransformScale);
 const lines = computed(() => chordProInput.value.split('\n'));
 const artist = computed(computeArtist);
 const bodyLines = computed(computeBodyLines);
 const key = computed(computeKey);
-const mainWidth = ref(document.querySelector('main').clientWidth);
 const stanzas = computed(computeStanzas);
 const tempo = computed(computeTempo);
 const time = computed(computeTime);
 const title = computed(computeTitle);
-
-onMounted(() => {
-  mainWidth.value = document.querySelector('main').clientWidth;
-});
-
-window.addEventListener('resize', () => {
-  mainWidth.value = document.querySelector('main').clientWidth;
-});
 
 function computeArtist() {
   const artistLine = lines.value.find(line => line.startsWith('{artist:')) || '';
@@ -124,27 +106,9 @@ function computeTitle() {
   const titleLine = lines.value.find(line => line.startsWith('{title:')) || '';
   return titleLine.replace('{title:', '').replace('}', '');
 }
-
-function computeTransformScale() {
-  return mainWidth.value < MAIN_MAX_WIDTH ? mainWidth.value / MAIN_MAX_WIDTH : 1;
-}
 </script>
 
 <style scoped>
-.chordchart {
-  aspect-ratio: 1 / 1.414;
-  outline: 1px solid #ccc;
-  padding: 2em;
-  transform: scale(var(--chordchart-transform-scale));
-  transform-origin: top left;
-  width: 1216px;
-
-  @media print {
-    transform: none;
-    outline: none;
-  }
-}
-
 h1 {
   font-size: 1.5em;
   font-weight: bold;
@@ -158,7 +122,6 @@ h1 {
 .chordchart-metadata-line {
   display: flex;
   gap: .4em;
-
 }
 
 .chordchart-metadata {

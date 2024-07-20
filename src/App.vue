@@ -2,9 +2,11 @@
   <header class="no-print">
     <nav>
       <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/print">Print Layout</RouterLink>
     </nav>
   </header>
   <ChordProInput
+    class="no-print"
     v-model:input="chordProInput"
   />
   <RouterView />
