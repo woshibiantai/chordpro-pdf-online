@@ -56,21 +56,44 @@ const comment = computed(() => {
 });
 
 const chordLyricPairs = computed(() => {
-  const segments = props.line.split(' ');
-  return segments.map((segment) => {
-    if (!segment.startsWith('[')) {
-      return {
-        chord: ' ',
-        lyric: segment,
-      };
+  const segments = props.line
+    .split(/(\[[\w\/\(\\#\)]*\])/); // Split by chords
+  return segments.reduce((chordLine, segment, index) => {
+    if (!segment.includes('[')) {
+      if (index === 0) {
+        chordLine.push({
+          chord: '',
+          lyric: segment,
+        });
+      } else {
+        return chordLine;
+      }
+    } else {
+      const chord = segment.replace('[', '').replace(']', '');
+      const nextSegment = segments[index + 1] || '';
+      if (nextSegment.includes('[')) {
+        chordLine.push({
+          chord,
+          lyric: '',
+        });
+      } else {
+        const positionOfFirstSpace = nextSegment.indexOf(' ');
+        const firstWord = nextSegment.slice(0, positionOfFirstSpace);
+        const followingWords = nextSegment.slice(positionOfFirstSpace + 1);
+        chordLine.push({
+          chord,
+          lyric: firstWord,
+        });
+        if (followingWords) {
+          chordLine.push({
+            chord: '',
+            lyric: followingWords,
+          });
+        }
+      }
     }
-    const withoutOpeningBracket = segment.replace('[', '');
-    const [chord, lyric] = withoutOpeningBracket.split(']');
-    return {
-      chord,
-      lyric,
-    };
-  });
+    return chordLine;
+  }, []);
 });
 </script>
 
@@ -111,7 +134,7 @@ const chordLyricPairs = computed(() => {
   font-family: inherit;
   height: 1.1em;
   padding-right: .4em;
-  white-space: nowrap;
+  white-space: pre-wrap;
 }
 
 .chordchart-pair-lyric {
