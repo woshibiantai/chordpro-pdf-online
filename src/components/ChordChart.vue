@@ -143,6 +143,6 @@ h1 {
 
 .chordchart-body-stanza {
   break-inside: avoid;
-  margin-top: 1em;
+  padding-top: 1em;
 }
 </style>
