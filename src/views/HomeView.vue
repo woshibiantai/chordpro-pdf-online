@@ -1,12 +1,29 @@
 <template>
   <main>
-    <ChordChart />
+    <form class="no-print">
+      <label for="chordpro-input">Chord chart in ChordPro format:</label>
+      <textarea
+        ref="textareaRef"
+        v-model="input"
+        id="chordpro-input"
+        rows="10"
+      />
+    </form>
+    <ChordChart
+      @click="onChordChartClick"
+    />
   </main>
 </template>
 
 <script setup>
-import { defineAsyncComponent } from 'vue';
+import { inject, defineAsyncComponent, ref } from 'vue';
 const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
+const input = inject('chordProInput');
+const textareaRef = ref(null);
+
+const onChordChartClick = () => {
+  textareaRef.value.focus();
+};
 </script>
 
 <style scoped>
@@ -36,5 +53,18 @@ main {
   @media screen and (max-width: 475px) {
     font-size: 9px;
   }
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+textarea {
+  font-family: monospace;
+  font-size: 14px;
+  width: 100%;
 }
 </style>
