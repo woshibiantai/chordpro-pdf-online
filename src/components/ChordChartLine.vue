@@ -24,7 +24,6 @@ defineProps({
 .chordchart-body-paragraph-line {
   display: flex;
   flex-wrap: wrap;
-  gap: .4em;
 }
 
 .chordchart-body-paragraph-line-verse {

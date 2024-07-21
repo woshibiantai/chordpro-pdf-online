@@ -24,10 +24,3 @@ const props = defineProps({
 const isChordLyricsPair = props.item instanceof ChordLyricsPair;
 const isTag = props.item instanceof Tag && props.item.hasValue();
 </script>
-
-<style scoped>
-.chordchart-misc-item {
-  font-size: .6em;
-  line-height: .8em;
-}
-</style>

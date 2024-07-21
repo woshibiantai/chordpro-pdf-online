@@ -25,6 +25,7 @@ defineProps({
   align-items: flex-start;
   display: inline-flex;
   flex-direction: column;
+  margin-right: .4em;
   margin-top: .2em;
 
   &:first-of-type {
