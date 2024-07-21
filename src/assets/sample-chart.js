@@ -20,9 +20,12 @@ export const sampleChordProChart =
 [F]Gotta make you [G]understand
 
 {comment: Chorus}
+{start_of_chorus}
 Never gonna [F]give you [G]up
 Never gonna [Em]let you [Am]down
 Never gonna [F]run [G]around and [E]desert [Am]you
 Never gonna [F]make you [G]cry
 Never gonna [Em]say good [Am]bye
-Never gonna [F]tell a [G]lie and [E]hurt [Am]you`;
+Never gonna [F]tell a [G]lie and [E]hurt [Am]you
+{end_of_chorus}
+`;

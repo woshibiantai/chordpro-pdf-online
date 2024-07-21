@@ -1,5 +1,10 @@
 <template>
-  <p class="chordchart-body-paragraph-line">
+  <p
+    class="chordchart-body-paragraph-line"
+    :class="{
+      'chordchart-body-paragraph-line-chorus': line.type === 'chorus',
+    }"
+  >
     <ChordChartLineItem
       v-for="(item, index) in line.items"
       :key="index"
@@ -26,7 +31,11 @@ defineProps({
   flex-wrap: wrap;
 }
 
-.chordchart-body-paragraph-line-verse {
-  margin-left: 2em;
+.chordchart-body-paragraph-line-chorus {
+  border-left: 1px solid #000;
+  
+  &:last-child {
+    padding-bottom: 1.1em;
+  }
 }
 </style>
