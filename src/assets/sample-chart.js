@@ -7,7 +7,7 @@ export const sampleChordProChart =
 {capo: 1}
 
 {comment: Intro}
-[|][F]   [|][G]   [|][Em]   [|][Am]   [|]
+[|][F][   |][G][   |][Em][   |][Am][   |]
 
 {comment: Verse 1}
 [F]We're no strangers to [G]love
