@@ -1,8 +1,14 @@
 <template>
   <section class="chordchart">
     <h1>{{ title }}</h1>
-    <p class="chordchart-artist">{{ artist }}</p>
-    <p class="chordchart-metadata-line">
+    <p
+      v-if="artist"
+      class="chordchart-artist"
+    >{{ artist }}</p>
+    <p
+      v-if="key || tempo || time"
+      class="chordchart-metadata-line"
+    >
       <span
         v-if="key"
         class="chordchart-metadata"
@@ -32,6 +38,9 @@
         :paragraph="paragraph"
       />
     </div>
+    <footer v-if="copyright">
+      <p>{{ copyright }}</p>
+    </footer>
   </section>
 </template>
 
@@ -55,6 +64,7 @@ const metadata = computed(() => song.value.metadata);
 
 const artist = computed(() => metadata.value.get('artist'));
 const bodyParagraphs = computed(() => song.value.bodyParagraphs);
+const copyright = computed(() => metadata.value.get('copyright'));
 const key = computed(() => metadata.value.get('key'));
 const tempo = computed(() => metadata.value.get('tempo'));
 const time = computed(() => metadata.value.get('time'));
@@ -100,5 +110,11 @@ h1 {
 
 .chordchart-body {
   column-count: var(--chordchart-columns);
+}
+
+footer {
+  font-size: .7em;
+  margin-top: 1em;
+  text-align: center;
 }
 </style>
