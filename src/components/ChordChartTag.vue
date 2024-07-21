@@ -34,6 +34,7 @@ const isKeychange = props.tag.name === 'keychange';
 
 .chordchart-keychange {
   display: block;
-  margin-left: auto;
+  flex: 1;
+  text-align: right;
 }
 </style>

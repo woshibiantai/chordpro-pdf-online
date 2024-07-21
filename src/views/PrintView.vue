@@ -3,13 +3,14 @@
     <section class="no-print">
       <PrintFormatToolbar
         v-model:columns="columns"
+        v-model:fontSize="fontSize"
       />
     </section>
     <div
       class="print-view"
       :style="{
+        '--font-size': `${fontSize}px`,
         '--transform-scale': transformScale,
-        '--width': `${MAIN_MAX_WIDTH}px`
       }"
     >
       <ChordChart
@@ -24,10 +25,11 @@ import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue
 const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
 const PrintFormatToolbar = defineAsyncComponent(() => import('../components/PrintFormatToolbar.vue'));
 
-const MAIN_MAX_WIDTH = 1216;
-const main = ref(null);
+const A4_WIDTH = 595; // Width of A4 paper in points
 const columns = ref(1);
-const mainWidth = ref(MAIN_MAX_WIDTH);
+const fontSize = ref(16);
+const main = ref(null);
+const mainWidth = ref(A4_WIDTH);
 const transformScale = computed(computeTransformScale);
 
 onMounted(() => {
@@ -40,7 +42,8 @@ onUnmounted(() => {
 });
 
 function computeTransformScale() {
-  return mainWidth.value < MAIN_MAX_WIDTH ? mainWidth.value / MAIN_MAX_WIDTH : 1;
+  const widthInPt = mainWidth.value * 3 / 4;
+  return widthInPt < A4_WIDTH ? widthInPt / A4_WIDTH : 1;
 }
 
 function updateMainWidth() {
@@ -50,16 +53,19 @@ function updateMainWidth() {
 
 <style scoped>
 .print-view {
-  aspect-ratio: 1 / 1.414;
+  font-size: var(--font-size, 16pt);
+  height: 894pt;
+  margin: 0 auto;
   outline: 1px solid #ccc;
   padding: 2em;
   transform: scale(var(--transform-scale));
   transform-origin: top left;
-  width: var(--width);
+  width: 595pt;
 
   @media print {
-    transform: none;
     outline: none;
+    padding: 0;
+    transform: none;
   }
 }
 </style>

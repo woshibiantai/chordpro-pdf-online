@@ -1,6 +1,16 @@
 <template>
   <menu>
     <div class="field">
+      <label for="fontSizeInput">Font size:</label>
+      <input
+        id="fontSizeInput"
+        min="1"
+        type="number"
+        :value="fontSize"
+        @input="onFontSizeInput"
+      />
+    </div>
+    <div class="field">
       <label for="columnSelect">Number of columns:</label>
       <select
         id="columnSelect"
@@ -31,6 +41,7 @@
 
 <script setup>
 const columns = defineModel('columns', { type: Number, default: 1 });
+const fontSize = defineModel('fontSize', { type: Number, default: 16 });
 
 function onPrint() {
   window.print();
@@ -38,6 +49,13 @@ function onPrint() {
 
 function updateColumns(event) {
   columns.value = Number(event.target.value);
+}
+
+function onFontSizeInput(event) {
+  const value = Number(event.target.value);
+  if (value > 0) {
+    fontSize.value = value;
+  }
 }
 </script>
 
