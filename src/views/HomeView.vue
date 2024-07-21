@@ -21,8 +21,13 @@ const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.v
 const input = inject('chordProInput');
 const textareaRef = ref(null);
 
-const onChordChartClick = () => {
+function onChordChartClick(event) {
   textareaRef.value.focus();
+  const closestElementWithIndex = event.target.closest('[data-index]');
+  if (closestElementWithIndex) {
+    const index = parseInt(closestElementWithIndex.getAttribute('data-index'), 10);
+    textareaRef.value.setSelectionRange(index, index);
+  }
 };
 </script>
 
