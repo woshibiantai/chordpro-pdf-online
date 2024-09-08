@@ -22,6 +22,10 @@
         required
       >
     </form>
+    <LoaderBars
+      style="margin: 0 auto; "
+      v-if="isLoading"
+    />
     <ChordChart
       :transposition="validatedTransposition"
       @click="onChordChartClick"
@@ -32,7 +36,9 @@
 <script setup>
 import { computed, inject, defineAsyncComponent, provide, ref, watch } from 'vue';
 const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
+const LoaderBars = defineAsyncComponent(() => import('../components/LoaderBars.vue'));
 const input = inject('chordProInput');
+const isLoading = inject('isLoading');
 const textareaRef = ref(null);
 const caretPosition = ref(0);
 const transposition = ref(0);

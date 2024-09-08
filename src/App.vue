@@ -15,7 +15,9 @@ import { RouterLink, RouterView } from 'vue-router'
 const searchParams = new URLSearchParams(location.search);
 const googleDriveFileId = searchParams.get('googleDriveFileId');
 const chordProInput = ref('');
+const isLoading = ref(true);
 provide('chordProInput', chordProInput);
+provide('isLoading', isLoading);
 
 if (googleDriveFileId) {
   fetch(`https://www.googleapis.com/drive/v3/files/${googleDriveFileId}?alt=media`, {
@@ -33,10 +35,11 @@ if (googleDriveFileId) {
     .then(response => response.text())
     .then(text => {
       chordProInput.value = text;
+      isLoading.value = false;
     })
     .catch(() => {
       setSampleInput();
-    })
+    });
 } else {
   setSampleInput();
 }
@@ -45,6 +48,7 @@ function setSampleInput() {
   import('@/assets/sample-chart.js')
     .then(({ sampleChordProChart }) => {
       chordProInput.value = sampleChordProChart;
+      isLoading.value = false;
     });
 }
 </script>
