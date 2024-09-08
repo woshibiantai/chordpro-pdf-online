@@ -49,10 +49,14 @@ import { computed, inject, ref, watch } from 'vue';
 import { ChordProParser, Song } from 'chordsheetjs';
 import ChordChartBodyParagraph from './ChordChartBodyParagraph.vue';
 
-defineProps({
+const props = defineProps({
   columns: {
     type: Number,
     default: 1,
+  },
+  transposition: {
+    type: Number,
+    default: 0,
   },
 });
 
@@ -75,6 +79,13 @@ watch(chordProInput, (newValue) => {
     song.value = parser.parse(newValue);
   } catch(err) {
     console.error(err);
+  }
+}, { immediate: true });
+
+watch(() => props.transposition, (newValue, oldValue) => {
+  if (song.value) {
+    const difference = newValue - oldValue;
+    song.value = song.value.transpose(difference);
   }
 }, { immediate: true });
 </script>

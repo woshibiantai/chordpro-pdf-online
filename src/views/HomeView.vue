@@ -1,6 +1,9 @@
 <template>
   <main>
-    <form class="no-print">
+    <form
+      class="no-print"
+      @submit.prevent
+    >
       <label for="chordpro-input">Chord chart in ChordPro format:</label>
       <textarea
         ref="textareaRef"
@@ -8,23 +11,40 @@
         id="chordpro-input"
         rows="10"
       />
+
+      <label for="chordpro-transpose">Transpose: </label>
+      <input
+        type="number"
+        id="chordpro-transpose"
+        v-model="transposition"
+        max="12"
+        min="-12"
+        required
+      >
     </form>
     <ChordChart
+      :transposition="validatedTransposition"
       @click="onChordChartClick"
     />
   </main>
 </template>
 
 <script setup>
-import { inject, defineAsyncComponent, provide, ref, watch } from 'vue';
+import { computed, inject, defineAsyncComponent, provide, ref, watch } from 'vue';
 const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
 const input = inject('chordProInput');
 const textareaRef = ref(null);
 const caretPosition = ref(0);
+const transposition = ref(0);
 provide('caretPosition', caretPosition);
 
 watch(input, () => {
   caretPosition.value = getCaretPosition();
+});
+
+const validatedTransposition = computed(() => {
+  const transpositionWithDefault = transposition.value || 0;
+  return Math.min(12, Math.max(-12, transpositionWithDefault || 0));
 });
 
 function onChordChartClick(event) {
@@ -82,5 +102,9 @@ textarea {
   font-family: monospace;
   font-size: 14px;
   width: 100%;
+}
+
+input:invalid {
+  border-color: red;
 }
 </style>
