@@ -24,16 +24,27 @@ if (googleDriveFileId) {
       'X-goog-api-key': import.meta.env.VITE_GOOGLE_API_KEY,
     }
   })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response;
+    })
     .then(response => response.text())
     .then(text => {
       chordProInput.value = text;
-    });
+    })
+    .catch(() => {
+      setSampleInput();
+    })
 } else {
+  setSampleInput();
+}
+
+function setSampleInput() {
   import('@/assets/sample-chart.js')
     .then(({ sampleChordProChart }) => {
-      if (!chordProInput.value) {
-        chordProInput.value = sampleChordProChart;
-      }
+      chordProInput.value = sampleChordProChart;
     });
 }
 </script>
