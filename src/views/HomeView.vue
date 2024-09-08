@@ -16,19 +16,30 @@
 </template>
 
 <script setup>
-import { inject, defineAsyncComponent, ref } from 'vue';
+import { inject, defineAsyncComponent, provide, ref, watch } from 'vue';
 const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
 const input = inject('chordProInput');
 const textareaRef = ref(null);
+const caretPosition = ref(0);
+provide('caretPosition', caretPosition);
+
+watch(input, () => {
+  caretPosition.value = getCaretPosition();
+});
 
 function onChordChartClick(event) {
-  textareaRef.value.focus();
   const closestElementWithIndex = event.target.closest('[data-index]');
   if (closestElementWithIndex) {
     const index = parseInt(closestElementWithIndex.getAttribute('data-index'), 10);
-    textareaRef.value.setSelectionRange(index, index);
+    caretPosition.value = index;
+    textareaRef.value.setSelectionRange(caretPosition.value, caretPosition.value);
   }
+  textareaRef.value.focus();
 };
+
+function getCaretPosition() {
+  return textareaRef.value.selectionStart;
+}
 </script>
 
 <style scoped>

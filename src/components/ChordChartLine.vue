@@ -3,6 +3,7 @@
     class="chordchart-body-paragraph-line"
     :class="{
       'chordchart-body-paragraph-line-chorus': line.type === 'chorus',
+      'highlighted': isLineSelected,
     }"
     :data-index="indexOfEndOfLine"
   >
@@ -27,9 +28,13 @@ const props = defineProps({
   }
 });
 
+const caretPosition = inject('caretPosition', { value: 0 });
 const chordProInput = inject('chordProInput');
 const lineBreakMatches = computed(() => [...chordProInput.value.matchAll(/\n/g)]);
 const indexOfEndOfLine = computed(() => lineBreakMatches.value[props.line.lineNumber].index);
+const isLineSelected = computed(() => {
+  return caretPosition.value === indexOfEndOfLine.value;
+});
 </script>
 
 <style scoped>
@@ -44,5 +49,9 @@ const indexOfEndOfLine = computed(() => lineBreakMatches.value[props.line.lineNu
   &:last-child {
     padding-bottom: 1.1em;
   }
+}
+
+.highlighted {
+  background-color: #f0f0f0;
 }
 </style>
