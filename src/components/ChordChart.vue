@@ -46,7 +46,7 @@
 
 <script setup>
 import { computed, inject, ref, watch } from 'vue';
-import { ChordProParser, Song } from 'chordsheetjs';
+import { ChordProParser, Song, UltimateGuitarParser } from 'chordsheetjs';
 import ChordChartBodyParagraph from './ChordChartBodyParagraph.vue';
 
 const props = defineProps({
@@ -62,7 +62,9 @@ const props = defineProps({
 
 
 const chordProInput = inject('chordProInput');
-const parser = new ChordProParser();
+const format = inject('format');
+const chordProParser = new ChordProParser();
+const ultimateGuitarParser = new UltimateGuitarParser();
 const song = ref(new Song());
 const metadata = computed(() => song.value.metadata);
 
@@ -73,10 +75,11 @@ const key = computed(() => metadata.value.get('key'));
 const tempo = computed(() => metadata.value.get('tempo'));
 const time = computed(() => metadata.value.get('time'));
 const title = computed(() => metadata.value.get('title'));
+const parser = computed(() => format.value === 'ultimate-guitar' ? ultimateGuitarParser : chordProParser);
 
-watch(chordProInput, (newValue) => {
+watch([chordProInput, parser], () => {
   try {
-    song.value = parser.parse(newValue);
+    song.value = parser.value.parse(chordProInput.value);
   } catch(err) {
     console.error(err);
   }

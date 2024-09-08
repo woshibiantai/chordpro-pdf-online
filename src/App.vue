@@ -13,7 +13,9 @@ import { provide, ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 
 const chordProInput = ref('');
+const format = ref('chordpro');
 provide('chordProInput', chordProInput);
+provide('format', format);
 
 import('@/assets/sample-chart.js')
   .then(({ sampleChordProChart }) => {

@@ -4,7 +4,7 @@
       class="no-print"
       @submit.prevent
     >
-      <label for="chordpro-input">Chord chart in ChordPro format:</label>
+      <label for="chordpro-input">Chord chart in {{ format }} format:</label>
       <textarea
         ref="textareaRef"
         v-model="input"
@@ -12,15 +12,28 @@
         rows="10"
       />
 
-      <label for="chordpro-transpose">Transpose: </label>
-      <input
-        type="number"
-        id="chordpro-transpose"
-        v-model="transposition"
-        max="12"
-        min="-12"
-        required
-      >
+      <fieldset>
+        <legend>Settings</legend>
+        <label for="chordpro-transpose">Transpose: </label>
+        <input
+          type="number"
+          id="chordpro-transpose"
+          v-model="transposition"
+          max="12"
+          min="-12"
+          required
+        >
+
+        <label for="chordpro-format">Format:</label>
+        <select
+          id="chordpro-format"
+          v-model="format"
+          required
+        >
+          <option value="chordpro" default>ChordPro</option>
+          <option value="ultimate-guitar">Ultimate Guitar</option>
+        </select>
+      </fieldset>
     </form>
     <ChordChart
       :transposition="validatedTransposition"
@@ -33,6 +46,7 @@
 import { computed, inject, defineAsyncComponent, provide, ref, watch } from 'vue';
 const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.vue'));
 const input = inject('chordProInput');
+const format = inject('format');
 const textareaRef = ref(null);
 const caretPosition = ref(0);
 const transposition = ref(0);
@@ -106,5 +120,10 @@ textarea {
 
 input:invalid {
   border-color: red;
+}
+
+fieldset {
+  display: flex;
+  gap: 8px;
 }
 </style>
