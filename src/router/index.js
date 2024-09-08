@@ -9,11 +9,6 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
-    {
-      path: '/print',
-      name: 'print',
-      component: () => import('../views/PrintView.vue'),
-    },
   ]
 })
 
