@@ -31,7 +31,13 @@ const props = defineProps({
 const caretPosition = inject('caretPosition', { value: 0 });
 const chordProInput = inject('chordProInput');
 const lineBreakMatches = computed(() => [...chordProInput.value.matchAll(/\n/g)]);
-const indexOfEndOfLine = computed(() => lineBreakMatches.value[props.line.lineNumber].index);
+const indexOfEndOfLine = computed(() => {
+  try {
+    return lineBreakMatches.value[props.line.lineNumber].index;
+  } catch {
+    return chordProInput.value.length;
+  }
+});
 const isLineSelected = computed(() => {
   return caretPosition.value === indexOfEndOfLine.value;
 });
