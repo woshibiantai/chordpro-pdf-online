@@ -84,7 +84,7 @@ watch(chordProInput, (newValue) => {
 
 watch(() => props.transposition, (newValue, oldValue) => {
   if (song.value) {
-    const difference = newValue - oldValue;
+    const difference = newValue - (oldValue ?? 0);
     song.value = song.value.transpose(difference);
   }
 }, { immediate: true });

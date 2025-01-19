@@ -8,10 +8,12 @@ import { RouterView } from 'vue-router'
 
 const searchParams = new URLSearchParams(location.search);
 const googleDriveFileId = searchParams.get('googleDriveFileId');
+const transpose = searchParams.get('transpose');
 const chordProInput = ref('');
 const isLoading = ref(true);
 provide('chordProInput', chordProInput);
 provide('isLoading', isLoading);
+provide('transpose', parseInt(transpose) || 0);
 
 if (googleDriveFileId) {
   fetch(`https://www.googleapis.com/drive/v3/files/${googleDriveFileId}?alt=media`, {

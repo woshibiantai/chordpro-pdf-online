@@ -92,12 +92,13 @@ const ChordChart = defineAsyncComponent(() => import('../components/ChordChart.v
 const LoaderBars = defineAsyncComponent(() => import('../components/LoaderBars.vue'));
 const input = inject('chordProInput');
 const isLoading = inject('isLoading');
+const defaultTransposition = inject('transpose');
 
 const caretPosition = ref(0);
 const columns = ref(1);
 const fontSize = ref(DEFAULT_FONT_SIZE);
 const textareaRef = ref(null);
-const transposition = ref(0);
+const transposition = ref(defaultTransposition);
 
 provide('caretPosition', caretPosition);
 
